@@ -81,14 +81,14 @@ public class recursion {
         if(first==n) {
             System.out.println(first);
             return;
-        };
+        }
         System.out.println(first);
         helper(first+1,n);
     }
 
 
     static int fibo(int n){
-        int ans =0;
+        int ans ;
         if(n<=1)return n;
         ans = fibo(n-1)+fibo(n-2);
         return ans;
@@ -123,7 +123,7 @@ public class recursion {
         if(n==2)return b;
         if(n==3)return c;
 
-        int ans =0;
+        int ans;
         ans = specialFibo(a,b,c,n-1) + specialFibo(a,b,c,n-2)+ specialFibo(a,b,c,n-3);
         return ans;
 
