@@ -1,5 +1,6 @@
 package git_practice;
 
+import javax.xml.stream.events.Characters;
 import java.util.*;
 
 public class techniques {
@@ -7,8 +8,13 @@ public class techniques {
         int[] arr = {1, 3, 4, 5, 7, 10, 11};
         int target = 9;
 //        System.out.println(firstNegInt(new int[]{-1,25,-33,26,26,-8,-6,2}, 2));
-        System.out.println(Arrays.toString(maxSlidingWindow(new int[]{-1,25,-33,26,26,-8,-6,2},3)));
+//        System.out.println(Arrays.toString(maxSlidingWindow(new int[]{-1,25,-33,26,26,-8,-6,2},3)));
+//        System.out.println(minSubArrayLen(7,new int[]{2,3,1,2,3,4}));
+        System.out.println(longestSubarray(new int[]{10,5,2,7,1,9},10));
 
+//        System.out.println(lengthOfLongestSubstring("bbcna"));
+//        System.out.println(longestKSubString("eceba",2));
+//        System.out.println((totalFruit(new int[]{3,3,3,1,2,1,1,2,3,3,4})));
     }
 
     //    two-pointers
@@ -128,6 +134,117 @@ public class techniques {
         return result;
     }
 
+
+//    dynamic window
+    public static int minSubArrayLen(int target, int[] nums) {
+        int left=0;
+        int right =0;
+        int min= Integer.MAX_VALUE;
+        int sum=0;
+        while(right<=nums.length-1){
+           sum += nums[right];
+           while(sum>=target){
+               min = Math.min(min,right-left+1);
+               sum -= nums[left];
+               left++;
+           }
+           right++;
+        }
+        return min==Integer.MAX_VALUE?0:min;
+    }
+
+    public static int lengthOfLongestSubstring(String s) {
+        int left =0;
+        int right =0;
+        Set<Character> set = new HashSet<>();
+        int max=Integer.MIN_VALUE;
+        while(right < s.length()){
+            if(!set.contains(s.charAt(right))){
+                set.add(s.charAt(right));
+                max = Math.max(max,set.size());
+                right++;
+            }else{
+                set.remove(s.charAt(left));
+                left++;
+            }
+        }
+        return max;
+    }
+
+    public static int longestKSubString(String s,int k){
+        if (k == 0 || s == null || s.isEmpty()) return 0;
+
+        int left = 0, right = 0, maxLen = 0;
+        Map<Character, Integer> map = new HashMap<>();
+
+        while (right < s.length()) {
+            char rightChar = s.charAt(right);
+            map.put(rightChar, map.getOrDefault(rightChar, 0) + 1);
+            right++;
+
+            // Shrink window if distinct characters exceed k
+            while (map.size() > k) {
+                char leftChar = s.charAt(left);
+//                map.put(leftChar, map.get(leftChar) - 1);
+//                if (map.get(leftChar) == 0) {
+//                    map.remove(leftChar);
+//                }
+                if(map.get(leftChar)==1){
+                    map.remove(leftChar);
+                }else{
+                    map.put(leftChar,map.get(leftChar)-1);
+                }
+                left++;
+            }
+
+            // Update max length if window is valid
+            if (map.size() <= k) {
+                maxLen = Math.max(maxLen, right - left);
+            }
+        }
+
+        return maxLen;
+    }
+
+    public static int totalFruit(int[] fruits) {
+        int left=0;
+        int right =0;
+        Map<Integer,Integer> map =new HashMap<>();
+        int max=Integer.MIN_VALUE;
+        while(right<= fruits.length-1){
+            map.put(fruits[right],map.getOrDefault(fruits[right],0)+1);
+            while(map.size()>2){
+                if(map.get(fruits[left])==1){
+                    map.remove(fruits[left]);
+                }else{
+                    map.put(fruits[left],map.get(fruits[left])-1);
+                }
+                left++;
+            }
+            if(map.size()<=2){
+                max = Math.max(max,right-left+1);
+            }
+            right++;
+        }
+        return max;
+    }
+
+    public static int longestSubarray(int[] nums, int target) {
+        int left=0;
+        int right =0;
+        int min= Integer.MIN_VALUE;
+        int sum=0;
+        while(right<=nums.length-1){
+            sum += nums[right];
+            while(sum>=target){
+                min = Math.max(min,right-left+1);
+                sum -= nums[left];
+                left++;
+            }
+            right++;
+        }
+        return min==Integer.MIN_VALUE?0:min;
+    }
 
 }
 
