@@ -4,10 +4,16 @@ import Sorting_Searching.BinarySearchIn2d;
 
 import java.util.Arrays;
 import java.math.BigInteger;
+import java.util.HashSet;
+import java.util.Set;
+
 public class maths {
     public static void main(String[] args) {
-        System.out.println((numberCompliment(4)));
+//        System.out.println((numberCompliment(4)));
+        System.out.println(Arrays.toString(singleNumber3(new int[]{1,0})));
+
     }
+
 
     //not complete yet
     public static int numberCompliment(int num){
@@ -69,13 +75,13 @@ public class maths {
     }
 
 
-    static int singleNumber(int[] nums){
-        int sum = nums[0];
-        for(int i=1;i<=nums.length-1;i++){
-            sum ^= nums[i];
-        }
-        return sum;
-    }
+//    static int singleNumber(int[] nums){
+//        int sum = nums[0];
+//        for(int i=1;i<=nums.length-1;i++){
+//            sum ^= nums[i];
+//        }
+//        return sum;
+//    }
 
 
     static int countOneBits(int n){
@@ -94,4 +100,44 @@ public class maths {
         }
         return arr;
     }
+
+    public static int singleNumber(int[] nums) {
+        int singleN = nums[0];
+        for(int i=1;i<=nums.length-1;i++){
+            singleN ^= nums[i];
+        }
+        return singleN;
+    }
+
+    public static int[] singleNumber3(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for(int num:nums){
+            if(set.isEmpty()){
+                set.add(num);
+            }else if(set.contains(num)){
+                set.remove(num);
+            }else{
+                set.add(num);
+            }
+        }
+        int[]arr = new int[set.size()];
+        int index=0;
+        for(int value:set){
+            arr[index] = value;
+            index++;
+        }
+        return arr;
+    }
+
+
+    public static int findMaximumXOR(int[] nums) {
+        int max =0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < nums.length && j!=i ; j++) {
+                max =  Math.max(nums[i]^nums[j],max);
+            }
+        }
+        return max;
+    }
+
 }
